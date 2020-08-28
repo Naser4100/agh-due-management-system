@@ -1,8 +1,9 @@
 const router = require('express').Router();
 
-const { addCustomer } = require('../controllers/customerController');
+const { addCustomer, getCustomers } = require('../controllers/customerController');
 
 router.route('/')
-  .post(addCustomer);
+  .post(addCustomer)
+  .get(getCustomers);
 
 module.exports = router;
