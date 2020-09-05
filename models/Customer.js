@@ -34,8 +34,8 @@ const CustomerSchema = new mongoose.Schema({
     required: [true, 'Deposited amount is required'],
   },
   dateAdded: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    required: [true, 'Date is required'],
   },
 });
 

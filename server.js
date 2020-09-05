@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
@@ -18,6 +19,7 @@ const app = express();
 
 // Body parse
 app.use(express.json());
+app.use(cors());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -37,7 +39,9 @@ app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Invalid Route' });
 });
 
-app.listen(PORT, () => console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`));
+const server = app.listen(PORT, () => {
+  console.log(`Server running in ${process.env.NODE_ENV} on ${PORT}`);
+});
 
 // Handle Unhandled rejections
 // eslint-disable-next-line no-unused-vars

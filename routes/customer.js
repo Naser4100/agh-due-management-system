@@ -1,8 +1,11 @@
 const router = require('express').Router();
 
-const { addCustomer } = require('../controllers/customerController');
+const { addCustomer, getCustomers, deleteCustomer } = require('../controllers/customerController');
 
 router.route('/')
-  .post(addCustomer);
+  .post(addCustomer)
+  .get(getCustomers);
+
+router.route('/:id').delete(deleteCustomer);
 
 module.exports = router;
