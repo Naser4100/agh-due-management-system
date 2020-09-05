@@ -7,7 +7,9 @@ import customerReducer from './customerReducer'
 
 import {
   GET_CUSTOMERS,
-  CUSTOMER_ERROR
+  CUSTOMER_ERROR,
+  ADD_CUSTOMER,
+  DELETE_CUSTOMER
 } from '../type';
 
 const CustomerState = props => {
@@ -18,6 +20,32 @@ const CustomerState = props => {
   }
 
   const [state, dispatch] = useReducer(customerReducer, initialState);
+
+  // Delete Customer
+  const deleteCustomer = async (id) => {
+    try {
+      await axios.delete(`/api/customer/${id}`);
+      dispatch({ type: DELETE_CUSTOMER, payload: id });
+    } catch (err) {
+      dispatch({ type: CUSTOMER_ERROR, payload: err.response.data.error });
+    }
+  }
+
+  // Add customer
+  const addCustomer = async (customer) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    try {
+      const res = await axios.post("/api/customer", customer, config);
+      dispatch({ type: ADD_CUSTOMER, payload: res.data.data });
+    } catch (err) {
+      dispatch({ type: CUSTOMER_ERROR, payload: err.response.data.error });
+    }
+  }
 
   // Get all expense
   const getCustomers = async () => {
@@ -38,7 +66,9 @@ const CustomerState = props => {
     value={{
       customers: state.customers,
       error: state.error,
-      getCustomers
+      getCustomers,
+      addCustomer,
+      deleteCustomer
     }}
     >
       {props.children}
